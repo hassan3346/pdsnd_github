@@ -21,8 +21,9 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    # use .lower() to make sure the names remain constant
     try:
-        city = input ('Would you like to see data for Chicago, New York City or Washington?\n').lower()   
+        city = input ('Would you like to see data for Chicago, New York City or Washington?\n').lower()
         while city not in city_name:
             print("You entered a invalid ", city, " please try again.")
             city= input ("Please select either Chicago, New York City or Washington\n").lower()
@@ -36,7 +37,7 @@ def get_filters():
     try:
         month =  input('Please enter one of the following months: All, January, February, March, April, May, or June.\n').lower()
         while month not in months:
-           print("You entered a invalid ", month, " please try again") 
+           print("You entered a invalid ", month, " please try again")
            month = input ("Please select either one of the following: All, January, February, March, April, May, or June. \n").lower()
            if month in months:
                 break
@@ -48,13 +49,13 @@ def get_filters():
     try:
         day =  input('Please enter one of the following months: All, Monday, Tuesday, Wednesday, Thursday, Friday, or Saturday.\n').lower()
         while day not in days:
-           print("You entered a invalid ", day, " please try again") 
+           print("You entered a invalid ", day, " please try again")
            day = input ("Please select either one of the following: All, Monday, Tuesday, Wednesday, Thursday, Friday, or Saturday.\n").lower()
            if day in days:
                 break
         print("You select ", day, " thank you.")
     except:
-        print('Error Occured')    
+        print('Error Occured')
 
 
     print('-'*40)
@@ -72,29 +73,30 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    
+
     df = pd.read_csv(CITY_DATA [city])
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['month'] = df['Start Time'].dt.month
     df['days_of_week'] = df['Start Time'].dt.weekday_name
     df['hour'] = df['Start Time'].dt.hour
-    
+
     if month != 'all':
         months = ['january', 'feburary', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
         df = df[df['month'] == month]
-        
+
     if day != 'all':
         df = df[df['days_of_week'] == day.title()]
-    
+
     return df
 
 def time_stats(df, month):
     """Displays statistics on the most frequent times of travel."""
-        
+    # use .mode() for common stats
+
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-  
+
     # TO DO: display the most common month
     if df['month'].to_string() != month:
         popular_month = df['month'].mode()[0]
@@ -123,7 +125,7 @@ def station_stats(df):
 
     # TO DO: display most commonly used start station
     popular_start = df['Start Station'].mode()[0]
-    print('Most commonly used start station:', popular_start) 
+    print('Most commonly used start station:', popular_start)
 
     # TO DO: display most commonly used end station
     popular_start = df['Start Station'].mode()[0]
@@ -201,8 +203,8 @@ def display_data(df):
         view_display = input("Do you wish to continue?: ").lower()
         if view_display != 'yes':
             break
-    
-    
+
+
 def main():
     while True:
         city, month, day = get_filters()
